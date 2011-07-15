@@ -26,4 +26,4 @@ command: $(GBROOT)/bin/$(TARG)
 
 
 # gb: local dependencies
-$(TARG): $(GBROOT)/_obj/github.com/droundy/widgets.a
+$(TARG): $(GBROOT)/_obj/github.com/droundy/gui.a

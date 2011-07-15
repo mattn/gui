@@ -47,7 +47,7 @@ func (w *widgetwrapper) AddSend(send func(string)) {
 }
 func (w *widgetwrapper) Handle(evt string) {
 	fmt.Println("Got event:", evt)
-	evts := strings.Split(evt, ":", -1)
+	evts := strings.Split(evt, ":")
 	switch evts[0] {
 	case "path":
 		if ph,ok := w.w.(PathHandler); ok {

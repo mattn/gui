@@ -3,7 +3,7 @@
 
 include $(GOROOT)/src/Make.inc
 
-TARG=github.com/droundy/widgets/websocket
+TARG=github.com/droundy/gui/websocket
 GOFILES=\
 	websocket.go\
 

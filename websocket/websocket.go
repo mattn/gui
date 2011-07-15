@@ -37,7 +37,7 @@ func Handle(url string, h Handler) {
 	http.Handle(path.Join(url, "socket"), websocket.Handler(myh))
 
 	skeleton := func(c http.ResponseWriter, req *http.Request) {
-		c.SetHeader("Content-Type", "text/html")
+		c.Header().Set("Content-Type", "text/html")
 		fmt.Fprintln(c, skeletonpage(req))
 	}
 	http.HandleFunc(url, skeleton)
@@ -65,7 +65,7 @@ func HandleSeparate(url string, hh func() Handler) {
 	http.Handle(path.Join(url, "socket"), websocket.Handler(myh))
 
 	skeleton := func(c http.ResponseWriter, req *http.Request) {
-		c.SetHeader("Content-Type", "text/html")
+		c.Header().Set("Content-Type", "text/html")
 		fmt.Fprintln(c, skeletonpage(req))
 	}
 	http.HandleFunc(url, skeleton)

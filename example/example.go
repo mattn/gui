@@ -113,7 +113,7 @@ func main() {
 }
 
 func styleServer(c http.ResponseWriter, req *http.Request) {
-	c.SetHeader("Content-Type", "text/css")
+	c.Header().Set("Content-Type", "text/css")
 	fmt.Fprint(c, `
 html {
     margin: 0;
