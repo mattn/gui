@@ -14,7 +14,13 @@ type labelledcheckbox struct {
 	gui.Changeable
 	gui.Bool
 }
-func LabelledCheckbox(l string) interface { gui.Widget; gui.String; gui.Changeable; gui.Bool } {
+
+func LabelledCheckbox(l string) interface {
+	gui.Widget
+	gui.String
+	gui.Changeable
+	gui.Bool
+} {
 	cb := gui.Checkbox()
 	label := gui.Text(l)
 	table := gui.Row(cb, label)
@@ -22,7 +28,7 @@ func LabelledCheckbox(l string) interface { gui.Widget; gui.String; gui.Changeab
 		cb.Toggle()
 		return cb.HandleChange()
 	})
-	out := labelledcheckbox{ table, label, cb, cb }
+	out := labelledcheckbox{table, label, cb, cb}
 	return &out
 }
 
@@ -31,20 +37,27 @@ type radiobuttons struct {
 	gui.String
 	gui.Changeable
 }
-	
-func RadioButtons(vs... string) interface{ gui.Widget; gui.String; gui.Changeable } {
-	var bs []interface{ gui.Changeable; gui.Bool; gui.String }
+
+func RadioButtons(vs ...string) interface {
+	gui.Widget
+	gui.String
+	gui.Changeable
+} {
+	var bs []interface {
+		gui.Changeable
+		gui.Bool
+		gui.String
+	}
 	var ws []gui.Widget
-	for _,v := range vs {
+	for _, v := range vs {
 		b := gui.RadioButton(v)
 		bs = append(bs, b)
 		ws = append(ws, b)
 	}
 	col := gui.Column(ws...)
 	grp := gui.RadioGroup(bs...)
-	return &radiobuttons{ col, grp, grp }
+	return &radiobuttons{col, grp, grp}
 }
-
 
 func main() {
 	http.HandleFunc("/style.css", styleServer)
@@ -84,7 +97,7 @@ func main() {
 	radio_report := gui.Text("I like to eat tasty fruit")
 	menu := gui.Menu("apples", "lemons", "oranges", "pears")
 	radio.OnChange(func() gui.Refresh {
-		menu.SetString(radio.GetString());
+		menu.SetString(radio.GetString())
 		radio_report.SetString("I like to eat " + radio.GetString())
 		return gui.NeedsRefresh
 	})
@@ -97,15 +110,15 @@ func main() {
 
 	err := gui.Run(12346,
 		gui.Column(
-		iscool,
-		testing_checkbox,
-		gui.Row(buttonA, buttonB),
-		gui.Row(gui.Text("Name:"), name),
-		hello,
-		gui.Text("Goodbye world!"),
-		radio,
-		radio_report,
-		menu,
+			iscool,
+			testing_checkbox,
+			gui.Row(buttonA, buttonB),
+			gui.Row(gui.Text("Name:"), name),
+			hello,
+			gui.Text("Goodbye world!"),
+			radio,
+			radio_report,
+			menu,
 		))
 	if err != nil {
 		panic("ListenAndServe: " + err.String())

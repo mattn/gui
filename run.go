@@ -25,7 +25,7 @@ func Locate(id Id, w Widget) Widget {
 	if id == w.Private__getId() {
 		return w
 	}
-	for _,w = range w.Private__getChildren() {
+	for _, w = range w.Private__getChildren() {
 		out := Locate(id, w)
 		if out != nil {
 			return out
@@ -34,11 +34,11 @@ func Locate(id Id, w Widget) Widget {
 	return nil
 }
 
-
 type widgetwrapper struct {
-	w Widget
+	w     Widget
 	sends []func(string)
 }
+
 func (w *widgetwrapper) Done(err os.Error) {
 	fmt.Println("Done with error:", err)
 }
@@ -50,7 +50,7 @@ func (w *widgetwrapper) Handle(evt string) {
 	evts := strings.Split(evt, ":")
 	switch evts[0] {
 	case "path":
-		if ph,ok := w.w.(PathHandler); ok {
+		if ph, ok := w.w.(PathHandler); ok {
 			rawurl := evt[len(evts[0])+1:]
 			url, err := http.ParseRequestURL(rawurl)
 			if err == nil {
@@ -77,7 +77,10 @@ func (w *widgetwrapper) Handle(evt string) {
 		}
 		changed := Locate(Id(evts[1]), w.w)
 		switch changed := changed.(type) {
-		case interface { Changeable; Bool }:
+		case interface {
+			Changeable
+			Bool
+		}:
 			if len(evts) == 2 {
 				fmt.Println("I got a nice event to toggle")
 				changed.Toggle()
@@ -86,7 +89,10 @@ func (w *widgetwrapper) Handle(evt string) {
 			} else {
 				fmt.Println("Ignoring a strange onchange text event with", len(evts), "events!")
 			}
-		case interface { Changeable; String }:
+		case interface {
+			Changeable
+			String
+		}:
 			if len(evts) == 4 {
 				changed.SetString(evts[3])
 				r := changed.HandleChange()
@@ -112,8 +118,8 @@ func (w *widgetwrapper) Handle(evt string) {
 	out := `<h3> Event is ` + evt + "</h3>\n"
 	html, ecs := w.w.Private__html()
 	out += html
-	for _,send := range w.sends {
-		for _,ec := range ecs {
+	for _, send := range w.sends {
+		for _, ec := range ecs {
 			fmt.Println("sending extra command:", ec)
 			send(string(ec))
 		}

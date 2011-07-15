@@ -9,7 +9,9 @@ import (
 )
 
 type Id string
+
 var newId <-chan Id
+
 func init() {
 	nid := make(chan Id, 5)
 	go func() {
@@ -31,6 +33,7 @@ func (i *Id) Private__getChildren() []Widget {
 type CopyWidget struct {
 	Widget
 }
+
 func (w *CopyWidget) Private__getId() Id {
 	return w.Widget.Private__getId()
 }
@@ -42,6 +45,7 @@ func (w *CopyWidget) Private__html() (string, []extraCommand) {
 }
 
 type ChangeHandler Hook
+
 func (o *ChangeHandler) OnChange(h Hook) {
 	*o = ChangeHandler(h)
 }
@@ -53,19 +57,21 @@ func (o *ChangeHandler) HandleChange() Refresh {
 }
 
 func MakePathHandler(w Widget) PathHandler {
-	return &pathHandler{ w, nil, "", false }
+	return &pathHandler{w, nil, "", false}
 }
+
 type pathHandler struct {
 	Widget
 	Hook
-	Path string
+	Path      string
 	isChanged bool
 }
+
 func (o *pathHandler) Private__html() (string, []extraCommand) {
 	html, ec := o.Widget.Private__html()
 	if o.isChanged {
 		o.isChanged = false
-		ec = append(ec, extraCommand("setpath " + o.Path))
+		ec = append(ec, extraCommand("setpath "+o.Path))
 	}
 	return html, ec
 }
@@ -96,6 +102,7 @@ func (o *pathHandler) OnPath(h Hook) {
 }
 
 type ClickHandler Hook
+
 func (o *ClickHandler) OnClick(h Hook) {
 	*o = ClickHandler(h)
 }
@@ -107,6 +114,7 @@ func (o *ClickHandler) HandleClick() Refresh {
 }
 
 type BoolValue bool
+
 func (b *BoolValue) GetBool() bool {
 	return bool(*b)
 }
@@ -114,5 +122,5 @@ func (b *BoolValue) SetBool(x bool) {
 	*b = BoolValue(x)
 }
 func (b *BoolValue) Toggle() {
-	*b = ! *b
+	*b = !*b
 }

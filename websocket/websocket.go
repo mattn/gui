@@ -21,7 +21,7 @@ type Handler interface {
 // single websocket.  It's quite primitive, and yet quite easy to use!
 func Handle(url string, h Handler) {
 	myh := func(ws *websocket.Conn) {
-		h.AddSend(func (p string) { fmt.Fprintln(ws, p) })
+		h.AddSend(func(p string) { fmt.Fprintln(ws, p) })
 		h.Handle("")
 		r := bufio.NewReader(ws)
 		for {
@@ -49,7 +49,7 @@ func Handle(url string, h Handler) {
 func HandleSeparate(url string, hh func() Handler) {
 	myh := func(ws *websocket.Conn) {
 		h := hh()
-		h.AddSend(func (p string) { fmt.Fprintln(ws, p) })
+		h.AddSend(func(p string) { fmt.Fprintln(ws, p) })
 		fmt.Fprintln(ws, "start")
 		r := bufio.NewReader(ws)
 		for {
@@ -76,14 +76,14 @@ func HandleSeparate(url string, hh func() Handler) {
 // same session which will look identical.
 func Run(url string, port int, handler Handler) os.Error {
 	Handle("/", handler)
-	return http.ListenAndServe(fmt.Sprint(":", port), nil);
+	return http.ListenAndServe(fmt.Sprint(":", port), nil)
 }
 
 // RunSeparate handles the case where you want each user who logs on
 // to have a separate session with a separate handler.
 func RunSeparate(url string, port int, handler func() Handler) os.Error {
 	HandleSeparate("/", handler)
-	return http.ListenAndServe(fmt.Sprint(":", port), nil);
+	return http.ListenAndServe(fmt.Sprint(":", port), nil)
 }
 
 func skeletonpage(req *http.Request) string {
